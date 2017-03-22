@@ -9,5 +9,23 @@
 
     <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react.js"></script>
     <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react-dom.js"></script>
+	
+	<script>
+		var rootElement = 
+		React.createElement('div', {}, 
+			React.createElement('h1', {}, "Contacts"), 
+			React.createElement('ul', {}, 
+				React.createElement('li', {}, 
+					React.createElement('h2', {}, "Cecilie Haugstvedt"),
+					React.createElement('a', {href: 'mailto:cecilie@example.com'}, 'cecilie@example.com')
+				),
+				React.createElement('li', {},
+					React.createElement('h2', {},"Vegard Haugstvedt"),
+					React.createElement('a', {href:'mailto:vegard@example.com'},'vegard@example.com')
+				)
+			)
+		)
+		ReactDOM.render(rootElement, document.getElementById('react-app'))
+	</script>
   </body>
 </html>

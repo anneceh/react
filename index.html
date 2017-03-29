@@ -1,31 +1,140 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="UTF-8" />
-    <title>I'm in a React app!</title>
-  </head>
-  <body>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <title>My first React app!</title>
+</head>
+
+<body>
     <div id="react-app"></div>
 
     <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react.js"></script>
     <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react-dom.js"></script>
-	
-	<script>
-		var rootElement = 
-		React.createElement('div', {}, 
-			React.createElement('h1', {}, "Contacts"), 
-			React.createElement('ul', {}, 
-				React.createElement('li', {}, 
-					React.createElement('h2', {}, "Cecilie Haugstvedt"),
-					React.createElement('a', {href: 'mailto:cecilie@example.com'}, 'cecilie@example.com')
-				),
-				React.createElement('li', {},
-					React.createElement('h2', {},"Vegard Haugstvedt"),
-					React.createElement('a', {href:'mailto:vegard@example.com'},'vegard@example.com')
-				)
-			)
-		)
-		ReactDOM.render(rootElement, document.getElementById('react-app'))
-	</script>
-  </body>
+
+    <script>
+        /*Data*/
+        var contacts = [{
+                key: 1,
+                name: "Cecilie Haugstvedt",
+                email: "cecilie@example.com",
+                description: "Test Lead"
+            },
+            {
+                key: 2,
+                name: "Vegard Haugstvedt",
+                email: "vegard@example.com"
+            },
+            {
+                key: 3,
+                name: "Allan"
+            }
+        ]
+
+        var newContact = {
+            name: "",
+            email: "",
+            description: ""
+        }
+
+        /*Components*/
+        var ContactItem = React.createClass({
+            propTypes: {
+                name: React.PropTypes.string.isRequired,
+                email: React.PropTypes.string.isRequired,
+                description: React.PropTypes.string,
+            },
+
+            render: function() {
+                return (
+                    React.createElement('li', {
+                            className: 'ContactItem'
+                        },
+                        React.createElement('h2', {
+                            className: 'ContactItem-name'
+                        }, this.props.name),
+                        React.createElement('a', {
+                            href: 'mailto' + this.props.email,
+                            className: 'ContactItem-email'
+                        }, this.props.email),
+                        React.createElement('div', {
+                            className: 'ContactItem-description'
+                        }, this.props.description)
+                    )
+                )
+            },
+        })
+
+        var ContactForm = React.createClass({
+            propTypes: {
+                contact: React.PropTypes.object.isRequired,
+            },
+
+            render: function() {
+                return (
+                    React.createElement('form', {className: 'ContactForm'},
+                        React.createElement('input', {
+                            type: 'text',
+                            placeholder: 'name (required)',
+                            value: this.props.contact.name,
+                        }),
+                        React.createElement('input', {
+                            type: 'text',
+                            placeholder: 'E-mail',
+                            value: this.props.contact.email,
+                        }),
+                        React.createElement('textarea', {
+                            placeholder: 'Description',
+                            value: this.props.contact.description,
+                        }),
+                        React.createElement('button', {
+                            type: 'submit'
+                        }, "Add Contact")
+                    )
+                )
+            },
+        })
+
+        var ContactView = React.createClass({
+            propTypes: {
+                contacts: React.PropTypes.array.isRequired,
+                newContact: React.PropTypes.object.isRequired,
+            },
+
+            render: function() {
+                var contactItemElements = this.props.contacts
+                    .filter(function(contact) {
+                        return contact.email
+                    })
+                    .map(function(contact) {
+                        return React.createElement(ContactItem, contact)
+                    })
+
+                return (
+                    React.createElement('div', {
+                            className: 'ContactView'
+                        },
+                        React.createElement('h1', {
+                            className: 'ContactView-title'
+                        }, "Contacts"),
+                        React.createElement('ul', {
+                            className: 'ContactView-list'
+                        }, contactItemElements),
+                        React.createElement(ContactForm, {
+                            contact: newContact
+                        })
+                    )
+                )
+            }
+        })
+
+        /*Render*/
+        ReactDOM.render(React.createElement(ContactView, {
+            contacts: contacts,
+            newContact: newContact
+        }), document.getElementById('react-app'))
+    </script>
+</body>
+
 </html>
